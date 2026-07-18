@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --color-ink: #1a1a1a;
+  --color-ink-muted: rgba(0, 0, 0, 0.55);
+  --color-ink-faint: rgba(0, 0, 0, 0.35);
+  --color-surface: #ffffff;
+  --color-surface-2: #f6f5f4;
+  --color-surface-3: #efeeec;
+  --color-border: rgba(0, 0, 0, 0.08);
+  --color-border-strong: rgba(0, 0, 0, 0.12);
+  --color-brand: #0075de;
+  --color-brand-soft: #e6f3fe;
+  --color-brand-ink: #005bab;
+  --color-accent-peach: #ffdec4;
+  --color-success: #0f7b3a;
+  --color-success-soft: #e8f7ee;
+  --color-danger: #c0392b;
+  --color-danger-soft: #fdecea;
+  --color-warning: #b45309;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-white text-[rgba(0,0,0,0.9)] antialiased;
+    font-family: var(--font-sans);
+    line-height: 1.5;
+  }
+  ::selection {
+    background: #cce5ff;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .notion-shadow {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.06);
+  }
+  .notion-shadow-lg {
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+  .prose-theory b {
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.92);
+  }
+  .prose-theory u {
+    text-decoration-color: #0075de;
+    text-underline-offset: 3px;
+  }
+  .prose-theory s {
+    color: #c0392b;
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.92);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-pop {
+  animation: pop 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+}

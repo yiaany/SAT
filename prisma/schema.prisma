@@ -1,0 +1,98 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  avatar       String   @default("📘")
+  xp           Int      @default(0)
+  level        Int      @default(1)
+  streak       Int      @default(0)
+  bestStreak   Int      @default(0)
+  lastStudyAt  DateTime?
+  targetScore  Int      @default(1400)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  progress     LessonProgress[]
+  attempts     ExerciseAttempt[]
+  bookmarks    Bookmark[]
+  achievements UserAchievement[]
+  sessions     StudySession[]
+}
+
+model LessonProgress {
+  id          String    @id @default(cuid())
+  userId      String
+  lessonId    String
+  completed   Boolean   @default(false)
+  score       Int       @default(0)
+  maxScore    Int       @default(0)
+  timeSpent   Int       @default(0)
+  completedAt DateTime?
+  updatedAt   DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, lessonId])
+  @@index([userId])
+}
+
+model ExerciseAttempt {
+  id         String   @id @default(cuid())
+  userId     String
+  lessonId   String
+  exerciseId String
+  correct    Boolean
+  answer     String
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, lessonId])
+}
+
+model Bookmark {
+  id        String   @id @default(cuid())
+  userId    String
+  lessonId  String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, lessonId])
+}
+
+model UserAchievement {
+  id            String   @id @default(cuid())
+  userId        String
+  achievementId String
+  unlockedAt    DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, achievementId])
+}
+
+model StudySession {
+  id              String   @id @default(cuid())
+  userId          String
+  mode            String
+  questionsTotal  Int      @default(0)
+  questionsCorrect Int     @default(0)
+  xpEarned        Int      @default(0)
+  durationSec     Int      @default(0)
+  createdAt       DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
